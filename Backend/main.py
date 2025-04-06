@@ -25,17 +25,25 @@ app.add_middleware(
 class URLRequest(BaseModel):
     url: str
 
+class SourceMaterialSchema(BaseModel):
+    summary: str
+    key_points: str
+    content_type: str 
 
 @app.post("/processText/")
 async def process_text(request: URLRequest):
     url = request.url
-    result = model.crawl_url(
-        url,
-        params={
-            'limit': 1,
-            'scrapeOptions': {'formats': ['markdown', 'html']}
-        },
-        poll_interval=30
+    result = model.extract(
+        [ url],
+     {
+        'prompt': (
+            "Read the content and extract: "
+            "1. A brief summary of what the page is about, "
+            "2. Key points or highlights, "
+            "3. What kind of content it is (e.g., document, research data, blog draft, product specs, course outline)."
+        ),
+        'schema': SourceMaterialSchema.model_json_schema()
+    }
     )
 
     return {"query_received": url, "response": result}
