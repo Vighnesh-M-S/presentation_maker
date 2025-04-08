@@ -1,20 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preentation Maker</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Presentation Maker</title>
+  <link rel="stylesheet" href="static/styles.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    pre#output {
+      background: #f9f9f9;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      white-space: pre-wrap;
+    }
+
+    em {
+      color: #666;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-    <h2>Type Your Text</h2>
-    <input type="text" id="textInput" placeholder="e.g. docs.firecrawl.dev">
-    <br>
-    <button onclick="processText()">Process</button>
-    <h3>Output:</h3>
-    <pre id="output"></pre>
+  <h2>📘 Generate Slides from Any URL</h2>
 
-    <script src="script.js"></script>
-    
+  <input type="text" id="textInput" placeholder="e.g. https://docs.firecrawl.dev" />
+
+  <button onclick="processText()">Create Slides</button>
+
+  <h3>📝 Output:</h3>
+  <pre id="output"><em>Waiting for input…</em></pre>
+
+  <script>
+    async function processText() {
+      let text = document.getElementById("textInput").value.trim();
+      const output = document.getElementById("output");
+
+      if (!text) {
+        output.innerHTML = "<span style='color:red;'>❗ Please enter a URL or text first.</span>";
+        return;
+      }
+
+      output.innerHTML = "<em>🛠️ Creating slides… please wait.</em>";
+
+      try {
+        const response = await fetch("http://127.0.0.1:9090/processText/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: text })
+        });
+
+        if (!response.ok) {
+          throw new Error("Server error: " + response.statusText);
+        }
+
+        const result = await response.json();
+
+        output.innerHTML = `
+          <strong>📥 Query Received:</strong><br>
+          <a href="${result.query_received}" target="_blank">${result.query_received}</a><br><br>
+          <strong>📤 Slide Link:</strong><br>
+          <a href="${result.response}" target="_blank">${result.response}</a>
+        `;
+      } catch (error) {
+        output.innerHTML = `<span style="color:red;">❌ Error: ${error.message}</span>`;
+      }
+    }
+  </script>
 </body>
 </html>
+    
