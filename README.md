@@ -60,12 +60,12 @@ Open [http://127.0.0.1:9090](http://127.0.0.1:9090) in your browser.
 
 ```
 .
-├── main.py             # FastAPI backend + Firecrawl + Selenium
+├── Backend
+│   ├── main.py
+│   ├── requirements.txt          # FastAPI backend + Firecrawl + Selenium
 ├── .env                # Your API keys and credentials
 ├── Frontend/
 │   ├── index.html
-│   ├── styles.css
-├── requirements.txt
 └── README.md
 ```
 
