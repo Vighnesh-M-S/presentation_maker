@@ -19,7 +19,7 @@ import time
 load_dotenv()
 app = FastAPI()
 
-app.mount("/static", StaticFiles(directory="../Frontend"), name="static")
+app.mount("/static", StaticFiles(directory="Frontend"), name="static")
 
 api_keyf = os.getenv("FIRECRAWL_API")
 email = os.getenv("EMAIL")
@@ -37,7 +37,7 @@ app.add_middleware(
 )
 @app.get("/")
 async def read_index():
-    return FileResponse(os.path.join("../Frontend", "index.html"))
+    return FileResponse(os.path.join("Frontend", "index.html"))
 
 class URLRequest(BaseModel):
     url: str

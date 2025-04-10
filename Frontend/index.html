@@ -101,10 +101,10 @@
           <a href="${result.response}" target="_blank">${result.response}</a>
         `;
       } catch (error) {
-        output.innerHTML = `<span style="color:red;">❌ Error: ${error.message}</span>`;
+        console.error("Error:", error);
+        output.innerHTML = "<span style='color:red;'>⚠️ An error occurred. Please check the console for details.</span>"
       }
     }
   </script>
 </body>
 </html>
-    
