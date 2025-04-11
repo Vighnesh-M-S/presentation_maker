@@ -78,6 +78,5 @@ https://app.getalai.com/view/your-deck-id
 
 ---
 
-## 🧠 Note
-This project is for educational purposes. Use responsibly and do not abuse automation on third-party platforms.
+x
 
